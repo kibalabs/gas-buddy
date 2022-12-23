@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "Twitter Something Extensions",
+  "description": "It's gonna do something with twitter, not sure what yet.",
+  "version": "0.1.0",
+  "icons": {
+    "16": "/assets/logo192.png",
+    "48": "/assets/logo192.png",
+    "128": "/assets/logo192.png"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Open me"
+  },
+  "permissions": [
+    // "activeTab",
+    // "scripting",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  // "background": {
+  //   "service_worker": "background.js"
+  // },
+  "content_scripts": [{
+    "matches": ["*://*/*"],
+    "run_at": "document_end",
+    "all_frames": true,
+    "js": ["foreground.js"]
+  }],
+  "web_accessible_resources": [{
+    "resources": ["injection.js"],
+    "matches": ["*://*/*"]
+  }]
+}
