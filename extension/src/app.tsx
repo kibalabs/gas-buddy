@@ -1,13 +1,13 @@
-///<reference types="chrome"/>
+/// <reference types="chrome"/>
 import React from 'react';
 
 import { LocalStorageClient, Requester } from '@kibalabs/core';
 import { MockStorage, useInitialization } from '@kibalabs/core-react';
-import { Alignment, Box, Checkbox, Direction, Head, IHeadRootProviderProps, KibaApp, PaddingSize, Stack, Text } from '@kibalabs/ui-react';
+import { Alignment, Box, Checkbox, Direction, IHeadRootProviderProps, KibaApp, PaddingSize, Stack, Text } from '@kibalabs/ui-react';
 
+import { Footer } from './components/Footer';
 import { GlobalsProvider, IGlobals } from './globalsContext';
 import { buildAppTheme } from './theme';
-import { Footer } from './components/Footer';
 
 
 declare global {
@@ -36,25 +36,28 @@ export const App = (props: IAppProps): React.ReactElement => {
   useInitialization((): void => {
     // tracker.initialize();
     // tracker.trackApplicationOpen();
-    chrome.storage.local.get(['isGasTrackingEnabled'], function(result) {
+    // eslint-disable-next-line no-undef
+    chrome.storage.local.get(['isGasTrackingEnabled'], (result) => {
       setIsEnabled(result.isGasTrackingEnabled !== undefined ? result.isGasTrackingEnabled : true);
     });
   });
 
   const onToggled = async (): Promise<void> => {
     setIsEnabled(!isEnabled);
-    chrome.storage.local.set({isGasTrackingEnabled: !isEnabled});
+    // eslint-disable-next-line no-undef
+    chrome.storage.local.set({ isGasTrackingEnabled: !isEnabled });
+    // eslint-disable-next-line no-undef
     const tabs = await chrome.tabs.query({});
-    for (let i=0; i<tabs.length; i+= 1) {
-      if (!tabs[i].id) {
-        continue;
+    for (let i = 0; i < tabs.length; i += 1) {
+      if (tabs[i].id) {
+        try {
+          // eslint-disable-next-line no-undef, no-await-in-loop
+          await chrome.tabs.sendMessage(tabs[i].id, { isGasTrackingEnabled: !isEnabled });
+        } catch (error: unknown) {
+          console.error(`Failed to send to tab: ${error}`);
+        }
       }
-      try {
-        await chrome.tabs.sendMessage(tabs[i].id, {isGasTrackingEnabled: !isEnabled});
-      } catch (error: unknown) {
-        console.error(`Failed to send to tab: ${error}`);
-      }
-    };
+    }
   };
 
   return (

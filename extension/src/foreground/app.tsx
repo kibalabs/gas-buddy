@@ -1,13 +1,13 @@
-///<reference types="chrome"/>
+/// <reference types="chrome"/>
 import React from 'react';
 
 import { KibaResponse, LocalStorageClient, Requester } from '@kibalabs/core';
 import { MockStorage, useEventListener, useInitialization } from '@kibalabs/core-react';
-import { Text, IHeadRootProviderProps, ThemeProvider, Box, ColorSettingView, LoadingSpinner, Stack, Direction, KibaIcon, Alignment, Spacing, PaddingSize } from '@kibalabs/ui-react';
+import { Alignment, Box, ColorSettingView, Direction, KibaIcon, LoadingSpinner, PaddingSize, Spacing, Stack, Text, ThemeProvider } from '@kibalabs/ui-react';
 
+import { FloatingView } from '../components/FloatingView';
 import { GlobalsProvider, IGlobals } from '../globalsContext';
 import { buildAppTheme } from '../theme';
-import { FloatingView } from '../components/FloatingView';
 
 
 declare global {
@@ -27,10 +27,6 @@ const globals: IGlobals = {
   localStorageClient,
 };
 
-export interface IAppProps extends IHeadRootProviderProps {
-  staticPath?: string;
-}
-
 interface Data {
   fast: number;
   priceUSD: number;
@@ -44,17 +40,18 @@ interface ConnectionData {
   chainId: string;
 }
 
-export const App = (props: IAppProps): React.ReactElement => {
+export const App = (): React.ReactElement => {
   const [isGasTrackingEnabled, setIsGasTrackingEnabled] = React.useState<boolean>(false);
   const [trackingInterval, setTrackingInterval] = React.useState<number | null>(null);
   const [data, setData] = React.useState<Data | null>(null);
   const [connectionData, setConnectionData] = React.useState<ConnectionData | null>(null);
-  console.log('isGasTrackingEnabled', isGasTrackingEnabled);
 
   useInitialization((): void => {
-    chrome.storage.local.get(['isGasTrackingEnabled'], function(result) {
+    // eslint-disable-next-line no-undef
+    chrome.storage.local.get(['isGasTrackingEnabled'], (result) => {
       setIsGasTrackingEnabled(result.isGasTrackingEnabled !== undefined ? result.isGasTrackingEnabled : true);
     });
+    // eslint-disable-next-line no-undef
     chrome.runtime.onMessage.addListener((message: unknown): void => {
       if (message.isGasTrackingEnabled !== undefined) {
         setIsGasTrackingEnabled(message.isGasTrackingEnabled);
@@ -62,41 +59,38 @@ export const App = (props: IAppProps): React.ReactElement => {
     });
   });
 
-  React.useEffect((): void => {
-    console.log('isGasTrackingEnabled changed');
-    if (isGasTrackingEnabled && connectionData && connectionData.connectedAddress && connectionData.chainId === '0x1') {
-      startTracking();
-    } else {
-      endTracking();
-    }
-  }, [isGasTrackingEnabled, connectionData]);
-
   useEventListener(window, 'message', (event: Event): void => {
     if (event.data.from === 'injection.js') {
       setConnectionData(event.data.data);
     }
   });
 
-  const startTracking = (): void => {
+  const startTracking = React.useCallback((): void => {
     if (trackingInterval || !isGasTrackingEnabled) {
       return;
     }
-    console.log('startTracking');
     setTrackingInterval(window.setInterval((): void => {
       requester.getRequest('https://ethgasprice.org/api/gas').then((response: KibaResponse): void => {
         setData(JSON.parse(response.content).data);
       });
     }, 5000));
-  };
+  }, [trackingInterval, isGasTrackingEnabled]);
 
-  const endTracking = (): void => {
+  const endTracking = React.useCallback((): void => {
     if (!trackingInterval) {
       return;
     }
-    console.log('endTracking');
     window.clearInterval(trackingInterval);
     setTrackingInterval(null);
-  }
+  }, [trackingInterval]);
+
+  React.useEffect((): void => {
+    if (isGasTrackingEnabled && connectionData && connectionData.connectedAddress && connectionData.chainId === '0x1') {
+      startTracking();
+    } else {
+      endTracking();
+    }
+  }, [isGasTrackingEnabled, connectionData, startTracking, endTracking]);
 
   return (
     <ThemeProvider theme={theme}>

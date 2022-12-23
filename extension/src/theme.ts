@@ -1,5 +1,5 @@
 import { getIsRunningOnBrowser } from '@kibalabs/core-react';
-import { buildTheme, IBoxTheme, ITextTheme, ITheme, mergeTheme, mergeThemePartial } from '@kibalabs/ui-react';
+import { buildTheme, ITheme } from '@kibalabs/ui-react';
 import { transparentize } from 'polished';
 
 export const buildAppTheme = (): ITheme => {
