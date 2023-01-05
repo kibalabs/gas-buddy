@@ -1,34 +1,20 @@
-import { getIsRunningOnBrowser } from '@kibalabs/core-react';
 import { buildTheme, ITheme } from '@kibalabs/ui-react';
-import { transparentize } from 'polished';
 
 export const buildAppTheme = (): ITheme => {
   const baseTheme = buildTheme();
-  let brandPrimary = '#fff0ab';
-  let brandSecondary = '#f29c13';
-  let background = '#000000';
-  let backgroundHighlight = '#231e00';
-  let text = '#ffffff';
-  let buttonPrimaryTextShadow = transparentize(0.25, brandPrimary);
-
-  if (getIsRunningOnBrowser() && window.matchMedia && !window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    brandPrimary = '#927700';
-    brandSecondary = '#593802';
-    background = '#ffffff';
-    backgroundHighlight = '#fff6c4';
-    text = '#555555';
-    buttonPrimaryTextShadow = transparentize(0.9, brandPrimary);
-  }
+  const brandPrimary = '#ffffff';
+  const brandSecondary = '#000000';
+  const background = '#0074D9';
+  const backgroundHighlight = '#231e00';
+  const text = '#ffffff';
 
   const theme = buildTheme({
     colors: {
       brandPrimary,
       brandSecondary,
-      tabSelectedBackground: transparentize(0.8, brandPrimary),
       background,
       backgroundHighlight,
       text,
-      buttonPrimaryTextShadow,
     },
     icons: {
       small: {
@@ -45,10 +31,11 @@ export const buildAppTheme = (): ITheme => {
       },
     },
     boxes: {
-      topBar: {
+      infoBar: {
         'border-width': '0',
-        'background-color': transparentize(0.8, background),
+        'background-color': '$colors.backgroundClear10',
         padding: `${baseTheme.dimensions.paddingNarrow2} ${baseTheme.dimensions.padding}`,
+        'border-radius': `${baseTheme.dimensions.borderRadius} 0 0 0`,
       },
     },
   });

@@ -33,5 +33,6 @@ if (typeof window.ethereum !== 'undefined') {
     sendStateUpdate();
   });
 } else {
+  hasWallet = false;
   sendStateUpdate();
 }

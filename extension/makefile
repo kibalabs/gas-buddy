@@ -29,6 +29,9 @@ security-check-ci:
 build:
 	@ npx build-react-app --config-modifier ./config.build.js
 
+build-executable: build
+	@ tar -czf executable.tar.gz ./dist/*
+
 build-ssr:
 	@ echo "Not Supported"
 
