@@ -13,6 +13,7 @@ app.style.height = '100%';
 app.style.width = '100%';
 app.style.top = '0';
 app.style.pointerEvents = 'none';
+app.style.zIndex = '1000';
 body.append(app);
 
 // inject react overlay

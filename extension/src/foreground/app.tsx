@@ -27,7 +27,7 @@ const globals: IGlobals = {
   localStorageClient,
 };
 
-interface Data {
+interface GasData {
   fast: number;
   priceUSD: number;
   rapid: number;
@@ -43,7 +43,7 @@ interface ConnectionData {
 export const App = (): React.ReactElement => {
   const [isGasTrackingEnabled, setIsGasTrackingEnabled] = React.useState<boolean>(false);
   const [trackingInterval, setTrackingInterval] = React.useState<number | null>(null);
-  const [data, setData] = React.useState<Data | null>(null);
+  const [data, setData] = React.useState<GasData | null>(null);
   const [connectionData, setConnectionData] = React.useState<ConnectionData | null>(null);
 
   useInitialization((): void => {
@@ -71,7 +71,8 @@ export const App = (): React.ReactElement => {
     }
     setTrackingInterval(window.setInterval((): void => {
       requester.getRequest('https://ethgasprice.org/api/gas').then((response: KibaResponse): void => {
-        setData(JSON.parse(response.content).data);
+        const newData = JSON.parse(response.content).data;
+        setData(newData);
       });
     }, 5000));
   }, [trackingInterval, isGasTrackingEnabled]);
@@ -97,11 +98,12 @@ export const App = (): React.ReactElement => {
       <GlobalsProvider globals={globals}>
         <ColorSettingView>
           {isGasTrackingEnabled && trackingInterval && (
-            <FloatingView isFullWidth={false} isFullHeight={false} positionBottom='0' positionRight='0'>
-              <Box variant='topBar' isFullHeight={false} isFullWidth={false} shouldClipContent={true}>
+            <FloatingView isFullWidth={false} isFullHeight={false} positionBottom='0' positionRight='0' zIndex='100000'>
+              <Box variant='infoBar' isFullHeight={false} isFullWidth={false} shouldClipContent={true}>
                 <Stack direction={Direction.Horizontal} isFullWidth={false} childAlignment={Alignment.Center} contentAlignment={Alignment.Center}>
                   {data ? (
                     <React.Fragment>
+                      <Spacing variant={PaddingSize.Narrow} />
                       <KibaIcon variant='small2' iconId='bs-fuel-pump-fill' />
                       <Spacing variant={PaddingSize.Narrow} />
                       <Text variant='note'>{data.standard}</Text>
@@ -112,12 +114,13 @@ export const App = (): React.ReactElement => {
                       <Spacing />
                       <Text variant='note'>$</Text>
                       <Spacing variant={PaddingSize.Narrow2} />
-                      <Text variant='note'>{data.priceUSD}</Text>
+                      <Text variant='note'>{Math.floor(data.priceUSD)}</Text>
+                      <Spacing variant={PaddingSize.Narrow} />
                     </React.Fragment>
                   ) : (
                     <React.Fragment>
                       <LoadingSpinner variant='small' />
-                      <Spacing variant={PaddingSize.Narrow} />
+                      <Spacing variant={PaddingSize.Default} />
                       <Text variant='note'>Loading gas price</Text>
                     </React.Fragment>
                   )}
