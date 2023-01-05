@@ -1,7 +1,7 @@
 /// <reference types="chrome"/>
 import React from 'react';
 
-import { LocalStorageClient, Requester, KibaResponse } from '@kibalabs/core';
+import { KibaResponse, LocalStorageClient, Requester } from '@kibalabs/core';
 import { MockStorage, useInitialization } from '@kibalabs/core-react';
 import { Alignment, Box, Checkbox, Direction, IHeadRootProviderProps, Image, KibaApp, KibaIcon, LoadingSpinner, PaddingSize, Spacing, Stack, Text } from '@kibalabs/ui-react';
 
@@ -57,19 +57,19 @@ export const App = (props: IAppProps): React.ReactElement => {
       const newData = JSON.parse(response.content).data;
       setData(newData);
     });
-  }, [requester]);
+  }, []);
 
   React.useEffect((): (() => void) => {
     updateData();
     setTrackingInterval(window.setInterval((): void => {
-      updateData()
+      updateData();
     }, 5000));
     return (): void => {
       if (trackingInterval) {
         window.clearInterval(trackingInterval);
       }
     };
-  }, [updateData]);
+  }, [updateData, trackingInterval]);
 
   const onToggled = async (): Promise<void> => {
     setIsEnabled(!isEnabled);

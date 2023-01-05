@@ -1,13 +1,12 @@
 import { buildTheme, ITheme } from '@kibalabs/ui-react';
-import { transparentize } from 'polished';
 
 export const buildAppTheme = (): ITheme => {
   const baseTheme = buildTheme();
-  let brandPrimary = '#ffffff';
-  let brandSecondary = '#000000';
-  let background = '#0074D9';
-  let backgroundHighlight = '#231e00';
-  let text = '#ffffff';
+  const brandPrimary = '#ffffff';
+  const brandSecondary = '#000000';
+  const background = '#0074D9';
+  const backgroundHighlight = '#231e00';
+  const text = '#ffffff';
 
   const theme = buildTheme({
     colors: {
