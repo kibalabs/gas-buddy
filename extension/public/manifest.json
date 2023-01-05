@@ -2,11 +2,11 @@
   "manifest_version": 3,
   "name": "Gas Buddy",
   "description": "Show the latest gas prices whenever your web3 wallet is connected to a website.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "icons": {
-    "16": "/assets/logo192.png",
-    "48": "/assets/logo192.png",
-    "128": "/assets/logo192.png"
+    "16": "/assets/logo16.png",
+    "48": "/assets/logo48.png",
+    "128": "/assets/logo128.png"
   },
   "action": {
     "default_popup": "index.html",
