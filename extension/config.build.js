@@ -12,6 +12,7 @@ module.exports = (config) => {
     webpackConfig.entry = {
       'main': webpackConfig.entry,
       'foreground': './src/foreground.tsx',
+      'foreground-injection': './src/foreground-injection.ts',
       'background': './src/background.ts',
     };
     // NOTE(krishan711): cant use optimize because otherwise the background and foreground are not importable (they get wrapped in a function)
@@ -28,7 +29,7 @@ module.exports = (config) => {
       new HtmlWebpackPlugin({
         inject: true,
         template: htmlTemplateFilePath,
-        excludeChunks: ['foreground', 'background'],
+        excludeChunks: ['foreground', 'background', 'foreground-injection'],
       }),
     ]
     return webpackConfig;

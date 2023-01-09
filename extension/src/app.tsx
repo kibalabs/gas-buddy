@@ -112,8 +112,8 @@ export const App = (props: IAppProps): React.ReactElement => {
                     </Stack>
                     <Spacing />
                     <Stack direction={Direction.Horizontal} childAlignment={Alignment.Center}>
-                      <KibaIcon iconId='bs-lightning-charge-fill' />
-                      <Spacing variant={PaddingSize.Narrow2} />
+                      <KibaIcon variant='smallish' iconId='bs-lightning-charge-fill' />
+                      <Spacing variant={PaddingSize.Narrow} />
                       <Text>{data.rapid}</Text>
                     </Stack>
                     <Spacing />

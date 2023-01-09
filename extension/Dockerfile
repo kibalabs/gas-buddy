@@ -11,7 +11,3 @@ RUN npm ci
 # Build app
 COPY . .
 RUN npm run build
-
-# Stage 2: Serve build files with nginx
-FROM ghcr.io/kibalabs/app-serve:latest
-COPY --from=build /app/dist /usr/share/nginx/html

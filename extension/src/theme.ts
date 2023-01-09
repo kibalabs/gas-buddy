@@ -20,6 +20,9 @@ export const buildAppTheme = (): ITheme => {
       small: {
         size: '0.6em',
       },
+      smallish: {
+        size: '0.7em',
+      },
       small2: {
         size: '0.5em',
       },

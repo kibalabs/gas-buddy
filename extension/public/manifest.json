@@ -13,7 +13,6 @@
     "default_title": "Open me"
   },
   "permissions": [
-    "tabs",
     "storage"
   ],
   "host_permissions": [
@@ -22,11 +21,10 @@
   "content_scripts": [{
     "matches": ["*://*/*"],
     "run_at": "document_end",
-    "all_frames": true,
     "js": ["foreground.js"]
   }],
   "web_accessible_resources": [{
-    "resources": ["injection.js"],
+    "resources": ["foreground-injection.js"],
     "matches": ["*://*/*"]
   }]
 }
