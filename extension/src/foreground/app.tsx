@@ -60,22 +60,27 @@ export const App = (): React.ReactElement => {
   });
 
   useEventListener(window, 'message', (event: Event): void => {
-    if (event.data.from === 'injection.js') {
+    if (event.data.from === 'gasbuddy-injection') {
       setConnectionData(event.data.data);
     }
   });
+
+  const updateData = React.useCallback((): void => {
+    requester.getRequest('https://ethgasprice.org/api/gas').then((response: KibaResponse): void => {
+      const newData = JSON.parse(response.content).data;
+      setData(newData);
+    });
+  }, []);
 
   const startTracking = React.useCallback((): void => {
     if (trackingInterval || !isGasTrackingEnabled) {
       return;
     }
+    updateData();
     setTrackingInterval(window.setInterval((): void => {
-      requester.getRequest('https://ethgasprice.org/api/gas').then((response: KibaResponse): void => {
-        const newData = JSON.parse(response.content).data;
-        setData(newData);
-      });
+      updateData();
     }, 5000));
-  }, [trackingInterval, isGasTrackingEnabled]);
+  }, [trackingInterval, isGasTrackingEnabled, updateData]);
 
   const endTracking = React.useCallback((): void => {
     if (!trackingInterval) {
