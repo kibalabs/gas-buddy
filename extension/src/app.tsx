@@ -3,7 +3,7 @@ import React from 'react';
 
 import { KibaResponse, LocalStorageClient, Requester } from '@kibalabs/core';
 import { MockStorage, useInitialization } from '@kibalabs/core-react';
-import { Alignment, Box, Checkbox, Direction, IHeadRootProviderProps, Image, KibaApp, KibaIcon, LoadingSpinner, PaddingSize, Spacing, Stack, Text } from '@kibalabs/ui-react';
+import { Alignment, Box, Button, Checkbox, Direction, IHeadRootProviderProps, Image, KibaApp, KibaIcon, LoadingSpinner, PaddingSize, Spacing, Stack, Text } from '@kibalabs/ui-react';
 
 import { Footer } from './components/Footer';
 import { GlobalsProvider, IGlobals } from './globalsContext';
@@ -98,7 +98,7 @@ export const App = (props: IAppProps): React.ReactElement => {
               <Image width='4em' height='4em' source='/assets/icon.png' />
               <Text variant='header1'>Gas Buddy</Text>
             </Stack>
-            <Checkbox isChecked={isEnabled} onToggled={onToggled} text='Enabled' />
+            <Checkbox isChecked={isEnabled} onToggled={onToggled} text='Show on connected pages' />
             <Box height='10em'>
               <Stack direction={Direction.Vertical} contentAlignment={Alignment.Center} childAlignment={Alignment.Center} isFullHeight={true} isFullWidth={true}>
                 {!data ? (
@@ -126,6 +126,9 @@ export const App = (props: IAppProps): React.ReactElement => {
                 )}
               </Stack>
             </Box>
+            <Spacing />
+                <Button iconLeft={<KibaIcon iconId='ion-chatbox' />} text='Give us feedback' target='mailto:gasbuddy@tokenpage.xyz?cc=arthur@tokenpage.xyz&subject=Here&apos;s%20some%20feedback%20about%20Gas%2Buddy' />
+            <Spacing />
             <Footer />
           </Stack>
         </Box>
