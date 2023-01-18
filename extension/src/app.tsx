@@ -127,7 +127,7 @@ export const App = (props: IAppProps): React.ReactElement => {
               </Stack>
             </Box>
             <Spacing />
-                <Button iconLeft={<KibaIcon iconId='ion-chatbox' />} text='Give us feedback' target='mailto:gasbuddy@tokenpage.xyz?cc=arthur@tokenpage.xyz&subject=Here&apos;s%20some%20feedback%20about%20Gas%2Buddy' />
+            <Button iconLeft={<KibaIcon iconId='ion-chatbox' />} text='Give us feedback' target='mailto:gasbuddy@tokenpage.xyz?cc=arthur@tokenpage.xyz&subject=Here&apos;s%20some%20feedback%20about%20Gas%2Buddy' />
             <Spacing />
             <Footer />
           </Stack>
