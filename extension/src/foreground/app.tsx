@@ -73,6 +73,7 @@ export const App = (): React.ReactElement => {
   }, []);
 
   const startTracking = React.useCallback((): void => {
+    console.log('startTracking');
     if (trackingInterval || !isGasTrackingEnabled) {
       return;
     }
@@ -100,6 +101,12 @@ export const App = (): React.ReactElement => {
 
   return (
     <ThemeProvider theme={theme}>
+      { Object.keys(theme.fonts || {}).map((fontKey: string, index: number): React.ReactElement => (
+        <React.Fragment key={index}>
+          <link href={theme.fonts[fontKey].url} rel='preload' as='style' />
+          <link href={theme.fonts[fontKey].url} rel='stylesheet' />
+        </React.Fragment>
+      ))}
       <GlobalsProvider globals={globals}>
         <ColorSettingView>
           {isGasTrackingEnabled && trackingInterval && (

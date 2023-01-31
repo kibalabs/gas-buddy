@@ -12,6 +12,7 @@ function sendStateUpdate(): void {
     },
   });
 }
+
 // @ts-ignore
 if (typeof window.ethereum !== 'undefined') {
   hasWallet = true;

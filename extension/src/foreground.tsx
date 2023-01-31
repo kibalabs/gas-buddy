@@ -2,17 +2,27 @@
 import React from 'react';
 
 import { createRoot } from 'react-dom/client';
+import { resetCss } from '@kibalabs/ui-react';
 
 import { App } from './foreground/app';
 
 const body = document.querySelector('body');
-const app = document.createElement('div');
-app.id = 'gasbuddy-extension-root';
-body.append(app);
+const appContainerWrapper = document.createElement('div');
+body.append(appContainerWrapper);
 
-// inject react overlay
-const container = document.getElementById(app.id);
-const root = createRoot(container);
+const resetStyle = document.createElement('style');
+resetStyle.appendChild(document.createTextNode(`
+  #gassbuddy-extension-root {
+    ${resetCss}
+  }
+`));
+appContainerWrapper.append(resetStyle);
+
+const appContainer = document.createElement('div');
+appContainer.id = 'gassbuddy-extension-root';
+appContainerWrapper.append(appContainer);
+
+const root = createRoot(appContainer);
 root.render(<React.StrictMode><App /></React.StrictMode>);
 
 // Inject script to alert about web3 status
